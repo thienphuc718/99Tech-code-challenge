@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { ExclamationTriangleIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import type { Token, SwapFormData } from '../types/token';
 import { TokenSelector } from './TokenSelector';
 import { AmountInput } from './AmountInput';
@@ -150,10 +152,10 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading tokens...</p>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center bg-neutral-800 rounded-card shadow-card-lg p-8 border border-neutral-700">
+          <ArrowPathIcon className="animate-spin h-12 w-12 text-accent-500 mx-auto mb-4" />
+          <p className="text-neutral-300 font-medium">Loading tokens...</p>
         </div>
       </div>
     );
@@ -161,18 +163,16 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-red-400 mb-4">
-            <svg className="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center bg-neutral-800 rounded-card shadow-card-lg p-8 border border-neutral-700 max-w-md">
+          <div className="text-red-400 mb-6">
+            <ExclamationTriangleIcon className="w-12 h-12 mx-auto mb-2" />
           </div>
-          <h2 className="text-xl font-semibold text-white mb-2">Failed to Load Tokens</h2>
-          <p className="text-gray-400 mb-4">Unable to fetch token data. Please check your connection and try again.</p>
+          <h2 className="text-xl font-semibold text-white mb-3">Failed to Load Tokens</h2>
+          <p className="text-neutral-400 mb-6 font-medium">Unable to fetch token data. Please check your connection and try again.</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-navy-600 text-white rounded-lg hover:bg-navy-500 transition-colors"
+            className="px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-card transition-all duration-200 shadow-card hover:shadow-card-lg"
           >
             Retry
           </button>
@@ -183,15 +183,24 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-navy-900 rounded-2xl shadow-2xl border border-navy-700 overflow-hidden">
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-white text-center mb-8">
-              Currency Swap
-            </h1>
+      <div className="w-full max-w-lg">
+        <div className="bg-neutral-800 rounded-card shadow-card-xl border border-neutral-700 backdrop-blur-sm">
+          <div className="p-4 sm:p-8">
+            <div className="text-center mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2" id="swap-form-title">
+                Currency Swap
+              </h1>
+              <p className="text-sm sm:text-base text-neutral-400 font-medium" id="swap-form-description">Swap tokens instantly with competitive rates</p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 sm:space-y-8"
+              aria-labelledby="swap-form-title"
+              aria-describedby="swap-form-description"
+              noValidate
+            >
+              <div className="space-y-4 sm:space-y-6">
                 <TokenSelector
                   tokens={tokens}
                   selectedToken={formData.fromToken}
@@ -202,7 +211,10 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
                 />
 
                 {errors.fromToken && (
-                  <p className="text-sm text-red-400" role="alert">{errors.fromToken}</p>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-red-950/30 border border-red-500/30 rounded-card-sm">
+                    <ExclamationTriangleIcon className="w-4 h-4 text-red-400 flex-shrink-0" />
+                    <p className="text-sm font-medium text-red-400" role="alert">{errors.fromToken}</p>
+                  </div>
                 )}
 
                 <AmountInput
@@ -225,17 +237,15 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
                       handleSwapTokens();
                     }
                   }}
-                  className="p-2 bg-navy-700 hover:bg-navy-600 rounded-full transition-all duration-200 transform hover:rotate-180 focus:outline-none focus:ring-2 focus:ring-navy-400"
+                  className="p-3 bg-neutral-700 hover:bg-accent-600 rounded-full transition-all duration-300 transform hover:rotate-180 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent-500 shadow-card hover:shadow-card-lg border border-neutral-600 hover:border-accent-500 button-press"
                   aria-label="Swap tokens"
                   tabIndex={0}
                 >
-                  <svg className="w-6 h-6 text-navy-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
+                  <ArrowsUpDownIcon className="w-6 h-6 text-white" />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 sm:space-y-6">
                 <TokenSelector
                   tokens={tokens}
                   selectedToken={formData.toToken}
@@ -246,7 +256,10 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
                 />
 
                 {errors.toToken && (
-                  <p className="text-sm text-red-400" role="alert">{errors.toToken}</p>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-red-950/30 border border-red-500/30 rounded-card-sm">
+                    <ExclamationTriangleIcon className="w-4 h-4 text-red-400 flex-shrink-0" />
+                    <p className="text-sm font-medium text-red-400" role="alert">{errors.toToken}</p>
+                  </div>
                 )}
 
                 <AmountInput
@@ -260,23 +273,20 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
               </div>
 
               {exchangeRate > 0 && formData.fromToken && formData.toToken && (
-                <div className="bg-navy-800 rounded-lg p-4 space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Exchange Rate</span>
-                    <span className="text-white" aria-label={`Exchange rate: 1 ${formData.fromToken.symbol} equals ${formatNumber(exchangeRate, 6)} ${formData.toToken.symbol}`}>
+                <div className="bg-neutral-700 border border-neutral-600 rounded-card p-4 shadow-card">
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-300 font-medium text-sm">Exchange Rate</span>
+                    <span className="text-white font-semibold text-sm" aria-label={`Exchange rate: 1 ${formData.fromToken.symbol} equals ${formatNumber(exchangeRate, 6)} ${formData.toToken.symbol}`}>
                       1 {formData.fromToken.symbol} = {formatNumber(exchangeRate, 6)} {formData.toToken.symbol}
                     </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Price Impact</span>
-                    <span className="text-green-400" aria-label="Price impact approximately zero percent">~0.00%</span>
                   </div>
                 </div>
               )}
 
               {errors.general && (
-                <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3">
-                  <p className="text-sm text-red-400" role="alert">{errors.general}</p>
+                <div className="flex items-center gap-3 bg-red-950/30 border border-red-500/30 rounded-card p-4 shadow-card">
+                  <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />
+                  <p className="text-sm font-medium text-red-400" role="alert">{errors.general}</p>
                 </div>
               )}
 
@@ -284,16 +294,16 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
                 type="submit"
                 disabled={!isFormValid || isSwapping}
                 className={`
-                  w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200
+                  w-full py-3 sm:py-4 px-4 sm:px-6 rounded-card font-bold text-base sm:text-lg transition-all duration-200 shadow-card button-press
                   ${isFormValid && !isSwapping
-                    ? 'bg-navy-600 hover:bg-navy-500 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    ? 'bg-accent-600 hover:bg-accent-700 text-white hover:shadow-card-lg transform hover:-translate-y-0.5 focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-neutral-800 hover-scale'
+                    : 'bg-neutral-600 text-neutral-400 cursor-not-allowed'
                   }
                 `}
               >
                 {isSwapping ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <ArrowPathIcon className="animate-spin h-5 w-5 text-white mr-2" />
                     Processing Swap...
                   </div>
                 ) : (
