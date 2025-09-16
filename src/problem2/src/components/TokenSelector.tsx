@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Token } from '../types/token';
+import type { Token } from '../types/token';
 import { formatNumber } from '../utils/calculations';
 
 interface TokenSelectorProps {

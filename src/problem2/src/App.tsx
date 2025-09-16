@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { SwapForm } from './components/SwapForm';
+import { Toast } from './components/Toast';
+import type { SwapFormData } from './types/token';
+import { useToast } from './hooks/useToast';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { toasts, removeToast, success, error } = useToast();
+
+  const handleSwap = async (data: SwapFormData): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() > 0.1) {
+          console.log('Swap executed:', data);
+          success(`Successfully swapped ${data.fromAmount} ${data.fromToken?.symbol} to ${data.toAmount} ${data.toToken?.symbol}`);
+          resolve();
+        } else {
+          const errorMsg = 'Swap failed due to network error. Please try again.';
+          error(errorMsg);
+          reject(new Error(errorMsg));
+        }
+      }, 2000);
+    });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <SwapForm onSwap={handleSwap} />
+
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

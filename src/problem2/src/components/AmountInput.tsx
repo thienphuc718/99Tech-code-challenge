@@ -1,5 +1,5 @@
 import React from 'react';
-import { Token } from '../types/token';
+import type { Token } from '../types/token';
 
 interface AmountInputProps {
   label: string;

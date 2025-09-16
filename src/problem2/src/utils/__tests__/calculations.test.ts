@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateSwapAmount, getExchangeRate, formatNumber, parseNumericInput, isValidAmount } from '../calculations';
-import { Token } from '../../types/token';
+import type { Token } from '../../types/token';
 
 const mockTokenA: Token = {
   symbol: 'ETH',

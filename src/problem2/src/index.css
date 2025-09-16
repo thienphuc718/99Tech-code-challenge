@@ -21,3 +21,32 @@
     color: white;
   }
 }
+
+@layer utilities {
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background: rgba(30, 27, 75, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-border {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed) padding-box,
+                linear-gradient(135deg, #4f46e5, #7c3aed) border-box;
+    border: 2px solid transparent;
+  }
+}
