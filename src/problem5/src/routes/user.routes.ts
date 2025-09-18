@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
+import { createUserRateLimit, strictRateLimit } from '../middlewares/rateLimiter';
 
 export const userRouter: Router = Router();
 
@@ -29,7 +30,7 @@ export const userRouter: Router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-userRouter.post('/', userController.createUser);
+userRouter.post('/', createUserRateLimit, userController.createUser);
 
 /**
  * @swagger
@@ -190,4 +191,4 @@ userRouter.put('/:id', userController.updateUser);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-userRouter.delete('/:id', userController.deleteUser);
+userRouter.delete('/:id', strictRateLimit, userController.deleteUser);
