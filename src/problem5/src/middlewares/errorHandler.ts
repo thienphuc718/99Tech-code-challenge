@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/AppError';
 import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
+import { logger } from '../config/logger';
 
 export const errorHandler = (
   error: Error,
@@ -11,6 +12,16 @@ export const errorHandler = (
 ): void => {
   let statusCode = 500;
   let message = 'Internal Server Error';
+
+  logger.error('Error occurred', {
+    error: error.message,
+    stack: error.stack,
+    method: req.method,
+    url: req.url,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('User-Agent'),
+    timestamp: new Date().toISOString(),
+  });
 
   if (error instanceof AppError) {
     statusCode = error.statusCode;
