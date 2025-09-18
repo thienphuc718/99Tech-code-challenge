@@ -3,6 +3,7 @@ import { AppError } from '../utils/AppError';
 import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 import { logger } from '../config/logger';
+import { config } from '../config/environment';
 
 export const errorHandler = (
   error: Error,
@@ -56,6 +57,6 @@ export const errorHandler = (
 
   res.status(statusCode).json({
     message,
-    ...(process.env.NODE_ENV === 'development' && { stack: error.stack }),
+    ...(config.NODE_ENV === 'development' && { stack: error.stack }),
   });
 };

@@ -1,9 +1,10 @@
 import winston from 'winston';
+import { config } from './environment';
 
 const { combine, timestamp, json, colorize, simple } = winston.format;
 
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: config.LOG_LEVEL,
   format: combine(
     timestamp(),
     json()
@@ -24,7 +25,7 @@ const logger = winston.createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
+if (config.NODE_ENV !== 'production') {
   logger.add(new winston.transports.Console({
     format: combine(
       colorize(),

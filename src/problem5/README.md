@@ -79,9 +79,9 @@ curl -X POST http://localhost:3000/users -H "Content-Type: application/json" -d 
 ## Expected Results
 
 - ✅ Users created (201 status)
-- ✅ List returns paginated results
-- ✅ Filtering works with partial matches
+- ✅ List return paginated results
+- ✅ Filtering work with partial matches
 - ✅ Updates modify specified fields
 - ✅ Deletions return 204 status
-- ✅ Invalid email returns 400 error
-- ✅ Duplicate email returns 409 error
+- ✅ Invalid email return 400 error
+- ✅ Duplicate email return 409 error

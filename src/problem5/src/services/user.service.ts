@@ -10,6 +10,7 @@ export class UserService {
         data: {
           name: data.name,
           email: data.email,
+          score: data.score ?? 0,
         },
       });
       return user;
